@@ -32,7 +32,7 @@ Your python application/script should do the following:
 - Output data into a file with logical parsing
 - As part of your python application, add a script that will help parse the file with respect to your data class
 
-Additional requirements:
+Optional requirements:
 - Create a script that will expose this as an API
 - Add your own pyenv with all environment requirements
 - Be able to pass in a txt file with names of users instead of one-by-one
