@@ -4,7 +4,7 @@
 
 Thank you for applying to Quant! We are very interested in your application and wanted to see what you can do with the skills and knowledge you possess. Please read through the following prompt for what to do.
 
-## **Prompt: Reddit User Scraper**
+## **Prompt: Twitter User Scraper**
 The rise of retail trading and tracking this information dessimination has often been at the center of attention for those looking to track what others are doing. Twitter has always been an interesting pool of information, with the restriction of text not seeming to detract from influential tweets by influential users. At Quant, we want to be able to use this information to make insights into our positions.
 
 Your task is to build a Python scraper for Twitter using its API. The goal of this script will be to gather information about pertinent users that we can use later as part of our Quantitative Research division. Your scrape should gather data about a user, namely any Public Identifying Information (user name, age, followers, etc.), the most-voted tweets, the most-voted retweets, what posts the user tends to retweet, and any other information that is possible. We need to be able to parse these, maybe as dataclass objects, and then it needs to be output into a fast, parsable file format (could be JSON or CSV for example). 
