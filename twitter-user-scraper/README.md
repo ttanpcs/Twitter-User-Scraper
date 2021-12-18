@@ -1,4 +1,4 @@
-# Twitter Subreddit Scraper
+# Twitter User Scraper
 
 **Difficulty: 3**
 
