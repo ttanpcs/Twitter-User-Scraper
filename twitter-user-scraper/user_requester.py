@@ -12,7 +12,7 @@ class UserRequester(sr.StandardRequester):
     ----------
     bearer_token : str
         The user's bearer token for authorization
-    usernames : list[str]
+    username_set : list[list[str]]
         All usernames to be included in the request
 
     Methods
@@ -22,10 +22,24 @@ class UserRequester(sr.StandardRequester):
     create_url(index)
         Creates the specific Twitter url for request type
     calculate_values()
-        Calculates the requested values and returns a UserData object
+        Calculates the requested values for all users in user_set
+        and returns a list of UserData objects
     get_data_name()
         Returns an identifier for the requester type
     """
+
+    def __init__(self, bearer_token, username_set):
+        """
+        Parameters
+        ----------
+        bearer_token : str
+            The user's bearer token for authorization
+        username_set : list[list[str]]
+            All usernames to be included in the request
+        """
+
+        super().__init__(bearer_token)
+        self.username_set = username_set
 
     def create_search_params(self):
         """Creates the parameters specific to request type.
@@ -44,7 +58,7 @@ class UserRequester(sr.StandardRequester):
         Parameters
         ----------
         index : int
-            current index to parse in users_info_set
+            current index to parse in username_set
 
         Returns
         -------
@@ -52,22 +66,24 @@ class UserRequester(sr.StandardRequester):
             url string for request type
         """
 
-        current_users = "usernames=" + ",".join(self.users_info_set[index])
+        current_users = "usernames=" + ",".join(self.username_set[index])
         user_fields = "user.fields=" + ",".join(constants.USER_FIELDS)
         url = "https://api.twitter.com/2/users/by?{}&{}".format(current_users, user_fields)
 
         return url
 
     def calculate_values(self):
-        """Calculates the requested values and returns a UserData object.
+        """Calculates the requested values for all users in user_set
+        and returns a list of UserData objects.
 
         Returns
         -------
         list[UserData]
             list of UserData object with requested statistics
-        """            
+        """
+
         raw_user_data = []
-        for index in range(len(self.users_info_set)):
+        for index in range(len(self.username_set)):
             raw_user_data = np.concatenate((self.connect_to_endpoint(index).get("data"), raw_user_data))
         user_data = []
         for user in raw_user_data:
