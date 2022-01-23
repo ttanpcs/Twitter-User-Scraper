@@ -89,10 +89,10 @@ class UserRequester(sr.StandardRequester):
         for user in raw_user_data:
             processed_user = {}
             for key in constants.USER_FIELDS:
-                if (constants.USER_SUB_FIELDS.get(key) is None):
+                if (constants.USER_FIELDS.get(key) is None):
                     processed_user[key] = user.get(key)
                 else:
-                    for subkey in constants.USER_SUB_FIELDS.get(key):
+                    for subkey in constants.USER_FIELDS.get(key):
                         processed_user[subkey] = user.get(key).get(subkey)
             user_data.append(ud.UserData(processed_user))
 

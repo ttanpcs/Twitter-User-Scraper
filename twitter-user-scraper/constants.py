@@ -1,20 +1,16 @@
-USER_FIELDS = [
-    "name",
-    "username",
-    "id",
-    "created_at",
-    "description",
-    "public_metrics",
-    "location"
-]
-
-USER_SUB_FIELDS = {
+USER_FIELDS = {
+    "name" : None,
+    "username" : None,
+    "id" : None,
+    "created_at" : None,
+    "description" : None,
     "public_metrics" : [
         "followers_count",
         "following_count",
         "tweet_count",
         "listed_count"
-    ]
+    ],
+    "location" : None
 }
 
 TWEET_FIELDS = [
