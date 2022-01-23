@@ -1,7 +1,7 @@
 USER_FIELDS = [
     "name",
     "username",
-    "id"
+    "id",
     "created_at",
     "description",
     "public_metrics",
@@ -11,7 +11,7 @@ USER_FIELDS = [
 USER_SUB_FIELDS = {
     "public_metrics" : [
         "followers_count",
-        "followering_count",
+        "following_count",
         "tweet_count",
         "listed_count"
     ]
