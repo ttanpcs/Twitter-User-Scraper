@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
-import requests
 import constants
+import requests
+import user_data as ud
 
 class StandardRequester(ABC):
     """An abstract base class for Requester classes that request to
@@ -12,7 +13,7 @@ class StandardRequester(ABC):
     ----------
     bearer_token : str
         The user's bearer token for authorization
-    users_info_set : list[list[str]]
+    user_set : list[UserData]
         All users information to be included in the request
 
     Methods
@@ -20,29 +21,30 @@ class StandardRequester(ABC):
     authorize_bearer_token()
         Creates the authorization search header with the bearer token
     connect_to_endpoint()
-        Connects to the specified endpoint and returns the data as a json file
+        Connects to the specified endpoint and returns the data as a json object
     create_search_params()
         Creates the parameters specific to request type
     create_url(index)
         Creates the specific Twitter url for request type
     calculate_values()
-        Calculates the requested values and returns a UserData object
+        Calculates the requested values for all users in user_set
+        and returns a list of UserData objects
     get_data_name()
         Returns an identifier for the requester type
     """
 
-    def __init__(self, bearer_token, users_info_set):
+    def __init__(self, bearer_token, user_set = None):
         """
         Parameters
         ----------
         bearer_token : str
             The user's bearer token for authorization
-        users_info_set : list[object]
+        user_set : list[UserData]
             All users information to be included in the request
         """
         
         self.bearer_token = bearer_token
-        self.users_info_set = users_info_set
+        self.user_set = user_set
 
     def authorize_bearer_token(self):
         """Creates the authorization search header with the bearer token.
@@ -60,12 +62,12 @@ class StandardRequester(ABC):
         return search_headers
 
     def connect_to_endpoint(self, index):
-        """Connects to the specified endpoint and returns the data as a json file.
+        """Connects to the specified endpoint and returns the data as a json object.
 
         Parameters
         ----------
         index : int
-            current index to parse in users_info_set
+            current index to parse in user_set
 
         Returns
         -------
@@ -105,7 +107,7 @@ class StandardRequester(ABC):
         Parameters
         ----------
         index : int
-            current index to parse in users_info_set
+            current index to parse in user_set
 
         Returns
         -------
@@ -117,12 +119,13 @@ class StandardRequester(ABC):
 
     @abstractmethod
     def calculate_values(self):
-        """Calculates the requested values and returns a UserData object.
+        """Calculates the requested values for all users in user_set
+        and returns a list of UserData objects.
 
         Returns
         -------
-        UserData
-            UserData object with requested statistics
+        list[UserData]
+            list of UserData objects with requested statistics
         """
 
         return {}
