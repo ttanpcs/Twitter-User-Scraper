@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import requests
+import constants
 
 class StandardRequester(ABC):
     """An abstract base class for Requester classes that request to
@@ -76,7 +77,7 @@ class StandardRequester(ABC):
         search_headers = self.authorize_bearer_token()
         url = self.create_url(index)
         response = requests.request("GET", url, headers = search_headers, params = search_params)
-        if (response.status_code != 200):
+        if (response.status_code != constants.SUCCESS):
             raise Exception(
                 "Request failed: {} {}".format(
                     response.status_code, response.text
