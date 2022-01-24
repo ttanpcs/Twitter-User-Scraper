@@ -41,13 +41,15 @@ class UserRequester(sr.StandardRequester):
         super().__init__(bearer_token)
         self.username_set = username_set
 
-    def create_search_params(self, index):
+    def create_search_params(self, index = None, next_token = None):
         """Creates the parameters specific to request type.
 
         Parameters
         ----------
         index : int
             current index to parse in user_set
+        next_token : str
+            next page token for endpoint
 
         Returns
         -------

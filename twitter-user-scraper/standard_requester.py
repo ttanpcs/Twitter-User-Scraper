@@ -20,9 +20,9 @@ class StandardRequester(ABC):
     -------
     authorize_bearer_token()
         Creates the authorization search header with the bearer token
-    connect_to_endpoint()
+    connect_to_endpoint(index, next_token)
         Connects to the specified endpoint and returns the data as a json object
-    create_search_params()
+    create_search_params(index, next_token)
         Creates the parameters specific to request type
     create_url(index)
         Creates the specific Twitter url for request type
@@ -61,13 +61,15 @@ class StandardRequester(ABC):
 
         return search_headers
 
-    def connect_to_endpoint(self, index):
+    def connect_to_endpoint(self, index, next_token = None):
         """Connects to the specified endpoint and returns the data as a json object.
 
         Parameters
         ----------
         index : int
             current index to parse in user_set
+        next_token : str
+            next page token for endpoint
 
         Returns
         -------
@@ -75,7 +77,7 @@ class StandardRequester(ABC):
             json with all requested data
         """
 
-        search_params = self.create_search_params(index)
+        search_params = self.create_search_params(index, next_token)
         search_headers = self.authorize_bearer_token()
         url = self.create_url(index)
         response = requests.request("GET", url, headers = search_headers, params = search_params)
@@ -89,13 +91,15 @@ class StandardRequester(ABC):
         return response.json()
 
     @abstractmethod
-    def create_search_params(self, index = None):
+    def create_search_params(self, index = None, next_token = None):
         """Creates the parameters specific to request type.
 
         Parameters
         ----------
         index : int
             current index to parse in user_set
+        next_token : str
+            next page token for endpoint
 
         Returns
         -------

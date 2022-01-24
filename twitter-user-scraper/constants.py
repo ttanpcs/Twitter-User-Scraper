@@ -13,6 +13,8 @@ USER_FIELDS = {
     "location" : None
 }
 
+MAX_FOLLOWERS = 1000
+
 FOLLOWS_FIELDS = {
     "user.fields" : "id",
     "max_results" : "1000"
