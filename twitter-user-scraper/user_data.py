@@ -65,4 +65,4 @@ class UserData():
             Name of corresponding requester
         """
 
-        return self.statistic_library.get(statistic_name).get(statistic_type)
+        return self.statistic_library.get(statistic_type).get(statistic_name)
