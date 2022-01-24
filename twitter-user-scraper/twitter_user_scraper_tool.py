@@ -7,7 +7,7 @@ specified in the command line arguments.
 This tool either accepts all non flagged parameters as string usernames
 or accepts an input file location with the flag --input.
 The --output flag allows the user to change the output location from
-'user_information.csv'
+'user_information.json'
 """
 
 import argparse
@@ -33,7 +33,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Functional Twitter user information scraper.")
     parser.add_argument("names", nargs = "*", help = "Twitter usernames to scrape information from")
     parser.add_argument("--input", "--i", help = "input file path")
-    parser.add_argument( "--output", "--o", help = "output file path (default: user_information.csv)", default = "user_information.csv")
+    parser.add_argument( "--output", "--o", help = "output file path (default: user_information.json)", default = "user_information.json")
+    
     args = parser.parse_args()
 
     main(args)

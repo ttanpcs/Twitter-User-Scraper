@@ -1,17 +1,12 @@
-USER_FIELDS = {
-    "name" : None,
-    "username" : None,
-    "id" : None,
-    "created_at" : None,
-    "description" : None,
-    "public_metrics" : [
-        "followers_count",
-        "following_count",
-        "tweet_count",
-        "listed_count"
-    ],
-    "location" : None
-}
+USER_FIELDS = [
+    "name",
+    "username",
+    "id",
+    "created_at",
+    "description",
+    "public_metrics",
+    "location"
+]
 
 MAX_FOLLOWERS = 1000
 
@@ -21,13 +16,13 @@ FOLLOWS_FIELDS = {
 }
 
 TWEET_FIELDS = {
-    "id" : None,
-    "text" : None,
-    "public_metrics" : None,
-    "created_at" : None,
-    "entities.hashtags.tag" : None,
-    "entities.cashtags.tag" : None,
-    "referenced_tweets" : None
+    "id",
+    "text",
+    "public_metrics",
+    "created_at",
+    "entities.hashtags.tag",
+    "entities.cashtags.tag",
+    "referenced_tweets"
 }
 
 SUCCESS = 200

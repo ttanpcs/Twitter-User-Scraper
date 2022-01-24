@@ -91,16 +91,7 @@ class UserRequester(sr.StandardRequester):
         raw_user_data = []
         for index in range(len(self.username_set)):
             raw_user_data = np.concatenate((self.connect_to_endpoint(index).get("data"), raw_user_data))
-        user_data = []
-        for user in raw_user_data:
-            processed_user = {}
-            for key in constants.USER_FIELDS:
-                if (constants.USER_FIELDS.get(key) is None):
-                    processed_user[key] = user.get(key)
-                else:
-                    for subkey in constants.USER_FIELDS.get(key):
-                        processed_user[subkey] = user.get(key).get(subkey)
-            user_data.append(ud.UserData(processed_user))
+        user_data = [ud.UserData(user) for user in raw_user_data]
 
         return user_data
 

@@ -89,10 +89,7 @@ class FollowsRequester(sr.StandardRequester):
                 next_token = current.get("meta").get("next_token")
                 followers = np.concatenate((current["data"], followers))
 
-            followers_set = {
-                "followers_id_list" : ",".join([d["id"] for d in followers])
-            }
-            self.user_set[i].add_statistic_set(followers_set, self.get_data_name())
+            self.user_set[i].add_statistic_set(followers, self.get_data_name())
 
         return self.user_set
 
