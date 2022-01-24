@@ -17,7 +17,7 @@ class FollowsRequester(sr.StandardRequester):
 
     Methods
     -------
-    create_search_params()
+    create_search_params(index, next_token)
         Creates the parameters specific to request type
     create_url(index)
         Creates the specific Twitter url for request type
@@ -28,19 +28,25 @@ class FollowsRequester(sr.StandardRequester):
         Returns an identifier for the requester type
     """
 
-    def create_search_params(self, index):
+    def create_search_params(self, index, next_token = None):
         """Creates the parameters specific to request type.
 
         Parameters
         ----------
         index : int
             current index to parse in user_set
+        next_token : str
+            next page token for endpoint
 
         Returns
         -------
         dict
             all requested params specific to request type
         """
+        if (next_token is not None):
+            current_params = constants.FOLLOWS_FIELDS
+            current_params["pagination_token"] = next_token
+            return current_params
 
         return constants.FOLLOWS_FIELDS
 
@@ -70,7 +76,25 @@ class FollowsRequester(sr.StandardRequester):
             list of UserData object with requested statistics
         """
         
-        pass
+        for i in range(len(self.user_set)):
+            current_number = 0
+            current = self.connect_to_endpoint(i)
+            current_number += current.get("meta").get("result_count")
+            next_token = current.get("meta").get("next_token")
+            followers = current["data"]
+
+            while (next_token is not None and current_number < constants.MAX_FOLLOWERS):
+                current = self.connect_to_endpoint(i, next_token)
+                current_number += current.get("meta").get("result_count")
+                next_token = current.get("meta").get("next_token")
+                followers = np.concatenate((current["data"], followers))
+
+            followers_set = {
+                "followers_id_list" : ",".join([d["id"] for d in followers])
+            }
+            self.user_set[i].add_statistic_set(followers_set, self.get_data_name())
+
+        return self.user_set
 
     def get_data_name(self):
         """Returns an identifier for the requester type.
