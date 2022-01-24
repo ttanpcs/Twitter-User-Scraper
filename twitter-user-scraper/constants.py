@@ -10,7 +10,7 @@ USER_FIELDS = [
 
 MAX_FOLLOWERS = 1000
 
-FOLLOWS_FIELDS = {
+FOLLOWERS_FIELDS = {
     "user.fields" : "id",
     "max_results" : "1000"
 }

@@ -3,8 +3,8 @@ import standard_requester as sr
 import numpy as np
 import user_data as ud
 
-class FollowsRequester(sr.StandardRequester):
-    """A requester class to calculate Twitter user follows statistics
+class FollowersRequester(sr.StandardRequester):
+    """A requester class to calculate Twitter user followers statistics
 
     ...
 
@@ -44,11 +44,11 @@ class FollowsRequester(sr.StandardRequester):
             all requested params specific to request type
         """
         if (next_token is not None):
-            current_params = constants.FOLLOWS_FIELDS
+            current_params = constants.FOLLOWERS_FIELDS
             current_params["pagination_token"] = next_token
             return current_params
 
-        return constants.FOLLOWS_FIELDS
+        return constants.FOLLOWERS_FIELDS
 
     def create_url(self, index):
         """Creates the specific Twitter url for request type.
@@ -102,4 +102,4 @@ class FollowsRequester(sr.StandardRequester):
             identifier for class
         """
 
-        return "follows"
+        return "Followers"
