@@ -75,7 +75,7 @@ class StandardRequester(ABC):
             json with all requested data
         """
 
-        search_params = self.create_search_params()
+        search_params = self.create_search_params(index)
         search_headers = self.authorize_bearer_token()
         url = self.create_url(index)
         response = requests.request("GET", url, headers = search_headers, params = search_params)
@@ -89,8 +89,13 @@ class StandardRequester(ABC):
         return response.json()
 
     @abstractmethod
-    def create_search_params(self):
+    def create_search_params(self, index = None):
         """Creates the parameters specific to request type.
+
+        Parameters
+        ----------
+        index : int
+            current index to parse in user_set
 
         Returns
         -------

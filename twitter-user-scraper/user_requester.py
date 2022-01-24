@@ -41,8 +41,13 @@ class UserRequester(sr.StandardRequester):
         super().__init__(bearer_token)
         self.username_set = username_set
 
-    def create_search_params(self):
+    def create_search_params(self, index):
         """Creates the parameters specific to request type.
+
+        Parameters
+        ----------
+        index : int
+            current index to parse in user_set
 
         Returns
         -------
@@ -50,9 +55,12 @@ class UserRequester(sr.StandardRequester):
             all requested params specific to request type
         """
 
-        return None
+        return {
+            "usernames" : ",".join(self.username_set[index]),
+            "user.fields" : ",".join(constants.USER_FIELDS)
+        }
 
-    def create_url(self, index):
+    def create_url(self, index = None):
         """Creates the specific Twitter url for request type.
 
         Parameters
@@ -66,11 +74,7 @@ class UserRequester(sr.StandardRequester):
             url string for request type
         """
 
-        current_users = "usernames=" + ",".join(self.username_set[index])
-        user_fields = "user.fields=" + ",".join(constants.USER_FIELDS)
-        url = "https://api.twitter.com/2/users/by?{}&{}".format(current_users, user_fields)
-
-        return url
+        return "https://api.twitter.com/2/users/by"
 
     def calculate_values(self):
         """Calculates the requested values for all users in user_set

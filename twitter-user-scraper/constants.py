@@ -13,14 +13,19 @@ USER_FIELDS = {
     "location" : None
 }
 
-TWEET_FIELDS = [
-    "id",
-    "text",
-    "public_metrics",
-    "created_at",
-    "entities.hashtags.tag",
-    "entities.cashtags.tag",
-    "referenced_tweets"
-]
+FOLLOWS_FIELDS = {
+    "user.fields" : "id",
+    "max_results" : "1000"
+}
+
+TWEET_FIELDS = {
+    "id" : None,
+    "text" : None,
+    "public_metrics" : None,
+    "created_at" : None,
+    "entities.hashtags.tag" : None,
+    "entities.cashtags.tag" : None,
+    "referenced_tweets" : None
+}
 
 SUCCESS = 200
