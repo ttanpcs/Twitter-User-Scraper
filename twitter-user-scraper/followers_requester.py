@@ -1,6 +1,7 @@
 import constants
-import standard_requester as sr
 import numpy as np
+import standard_requester as sr
+from tqdm import tqdm 
 import user_data as ud
 
 class FollowersRequester(sr.StandardRequester):
@@ -76,7 +77,7 @@ class FollowersRequester(sr.StandardRequester):
             list of UserData objects with requested statistics
         """
         
-        for i in range(len(self.user_set)):
+        for i in tqdm(range(len(self.user_set)), desc = "Followers"):
             current_number = 0
             current = self.connect_to_endpoint(i)
             current_number += current.get("meta").get("result_count")

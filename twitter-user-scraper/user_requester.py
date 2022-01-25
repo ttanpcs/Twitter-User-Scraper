@@ -1,6 +1,7 @@
 import constants
-import standard_requester as sr
 import numpy as np
+import standard_requester as sr
+from tqdm import tqdm 
 import user_data as ud
 
 class UserRequester(sr.StandardRequester):
@@ -89,7 +90,7 @@ class UserRequester(sr.StandardRequester):
         """
 
         raw_user_data = []
-        for index in range(len(self.username_set)):
+        for index in tqdm(range(len(self.username_set)), desc = "User"):
             raw_user_data = np.concatenate((self.connect_to_endpoint(index).get("data"), raw_user_data))
         user_data = [ud.UserData(user) for user in raw_user_data]
 

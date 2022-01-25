@@ -1,7 +1,8 @@
 import constants
-import standard_requester as sr
-import numpy as np
 import heapq
+import numpy as np
+import standard_requester as sr
+from tqdm import tqdm 
 
 class TimelineRequester(sr.StandardRequester):
     """A requester class to calculate Twitter user statistics
@@ -101,8 +102,6 @@ class TimelineRequester(sr.StandardRequester):
         tweets = current["data"]
 
         while (next_token is not None):
-            print(str(current_number))
-            print(next_token)
             current = self.connect_to_endpoint(index, next_token)
             current_number += current.get("meta").get("result_count")
             next_token = current.get("meta").get("next_token")
@@ -190,7 +189,6 @@ class TimelineRequester(sr.StandardRequester):
             self.fill_statistic_heap(statistics_tuple["most_liked_tweets"], (liked_num_tuple, tweet_index))
             if (self.is_retweet(current_tweets[tweet_index])):
                 self.fill_statistic_heap(statistics_tuple["most_retweeted_retweets"], (retweeted_num_tuple, tweet_index))
-                self.fill_statistic_heap(statistics_tuple["most_liked_retweets"], (liked_num_tuple, tweet_index))
         
         statistics_tuple["hashtags"] = heapq.nlargest(constants.NUMBER_TAGS_SAVED, [(hashtag_dict[key], key) for key in hashtag_dict])
         statistics_tuple["cashtags"] = heapq.nlargest(constants.NUMBER_TAGS_SAVED, [(cashtag_dict[key], key) for key in cashtag_dict])
@@ -205,13 +203,12 @@ class TimelineRequester(sr.StandardRequester):
             list of UserData objects with requested statistics
         """
 
-        for user_index in range(len(self.user_set)):
+        for user_index in tqdm(range(len(self.user_set)), desc = "Timeline"):
             current_tweets = self.request_tweets(user_index)
             statistics_tuple = {
                 "most_retweeted_tweets" : [],
                 "most_liked_tweets" : [],
                 "most_retweeted_retweets" : [],
-                "most_liked_retweets" : [],
                 "hashtags" : {},
                 "cashtags" : {}
             }
