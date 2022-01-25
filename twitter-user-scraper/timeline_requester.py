@@ -2,7 +2,6 @@ import constants
 import standard_requester as sr
 import numpy as np
 import heapq
-import user_data as ud
 
 class TimelineRequester(sr.StandardRequester):
     """A requester class to calculate Twitter user statistics
@@ -23,6 +22,16 @@ class TimelineRequester(sr.StandardRequester):
         Creates the parameters specific to request type
     create_url(index)
         Creates the specific Twitter url for request type
+    request_tweets(index)
+        Requests the last 3200 for a user.
+    is_retweet(tweet)
+        Determines if a tweet is a retweet
+    fill_statistic_heap(heap, statistic)
+        Fills heap with current statistic tuple
+    count_tags(tag_dict, tweet, type)
+        Fills tag dictionary with counts of each tag
+    fill_statistics_tuple(statistics_tuple, current_tweets)
+        Analyzes current_tweets to fill tuple
     calculate_values()
         Calculates the requested values for all users in user_set
         and returns a list of UserData objects
@@ -196,7 +205,27 @@ class TimelineRequester(sr.StandardRequester):
             list of UserData objects with requested statistics
         """
 
-        pass
+        for user_index in range(len(self.user_set)):
+            current_tweets = self.request_tweets(user_index)
+            statistics_tuple = {
+                "most_retweeted_tweets" : [],
+                "most_liked_tweets" : [],
+                "most_retweeted_retweets" : [],
+                "most_liked_retweets" : [],
+                "hashtags" : {},
+                "cashtags" : {}
+            }
+            statistics = {}
+            self.fill_statistics_tuple(statistics_tuple, current_tweets)
+            
+            for statistic in statistics_tuple:
+                if (statistic == "hashtags" or statistic == "cashtags"):
+                    statistics[statistic] = statistics_tuple[statistic]
+                else:
+                    statistics[statistic] = [current_tweets[index] for n, index in statistics_tuple[statistic]]
+            self.user_set[user_index].add_statistic_set(statistics, self.get_data_name())
+
+        return self.user_set
 
     def get_data_name(self):
         """Returns an identifier for the requester type.

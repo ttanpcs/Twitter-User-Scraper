@@ -20,9 +20,14 @@ TWEET_FIELDS = {
     "text",
     "public_metrics",
     "created_at",
-    "entities.hashtags.tag",
-    "entities.cashtags.tag",
+    "entities",
     "referenced_tweets"
 }
+
+TWEET_MAX_RESULTS = 100
+
+NUMBER_TAGS_SAVED = 3
+
+NUMBER_TWEETS_SAVED = 5
 
 SUCCESS = 200
