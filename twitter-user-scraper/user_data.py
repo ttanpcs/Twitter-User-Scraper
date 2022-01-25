@@ -16,7 +16,7 @@ class UserData():
         Gets the specified statistic
     """
 
-    def __init__(self, statistic_set = None, name = "user"):
+    def __init__(self, statistic_set = None, name = "User"):
         """
         Parameters
         ----------

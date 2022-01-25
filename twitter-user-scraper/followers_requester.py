@@ -56,7 +56,7 @@ class FollowersRequester(sr.StandardRequester):
         Parameters
         ----------
         index : int
-            current index to parse in username_set
+            current index to parse in user_set
 
         Returns
         -------
@@ -64,7 +64,7 @@ class FollowersRequester(sr.StandardRequester):
             url string for request type
         """
 
-        return "https://api.twitter.com/2/users/{}/followers".format(self.user_set[index].get_statistic("user", "id"))
+        return "https://api.twitter.com/2/users/{}/followers".format(self.user_set[index].get_statistic("User", "id"))
 
     def calculate_values(self):
         """Calculates the requested values for all users in user_set
@@ -73,7 +73,7 @@ class FollowersRequester(sr.StandardRequester):
         Returns
         -------
         list[UserData]
-            list of UserData object with requested statistics
+            list of UserData objects with requested statistics
         """
         
         for i in range(len(self.user_set)):

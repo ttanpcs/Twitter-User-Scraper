@@ -47,7 +47,7 @@ class UserRequester(sr.StandardRequester):
         Parameters
         ----------
         index : int
-            current index to parse in user_set
+            current index to parse in username_set
         next_token : str
             next page token for endpoint
 
@@ -85,7 +85,7 @@ class UserRequester(sr.StandardRequester):
         Returns
         -------
         list[UserData]
-            list of UserData object with requested statistics
+            list of UserData objects with requested statistics
         """
 
         raw_user_data = []
@@ -104,4 +104,4 @@ class UserRequester(sr.StandardRequester):
             identifier for class
         """
 
-        return "user"
+        return "User"
