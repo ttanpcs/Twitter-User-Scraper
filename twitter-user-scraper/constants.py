@@ -24,6 +24,8 @@ TWEET_FIELDS = {
     "referenced_tweets"
 }
 
+MAX_USERNAMES_PER_QUERY = 100
+
 TWEET_MAX_RESULTS = 100
 
 NUMBER_TAGS_SAVED = 3
