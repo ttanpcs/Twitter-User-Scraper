@@ -45,7 +45,14 @@ class TimelineRequester(sr.StandardRequester):
             all requested params specific to request type
         """
 
-        pass
+        current_params = {
+            "tweet.fields" : ",".join(constants.TWEET_FIELDS),
+            "max_results" : constants.TWEET_MAX_RESULTS
+        }
+        if (next_token is not None):
+            current_params["pagination_token"] = next_token
+
+        return current_params
 
     def create_url(self, index):
         """Creates the specific Twitter url for request type.
@@ -53,7 +60,7 @@ class TimelineRequester(sr.StandardRequester):
         Parameters
         ----------
         index : int
-            current index to parse in username_set
+            current index to parse in user_set
 
         Returns
         -------
@@ -61,7 +68,7 @@ class TimelineRequester(sr.StandardRequester):
             url string for request type
         """
 
-        pass
+        return "https://api.twitter.com/2/users/{}/tweets".format(self.user_set[index].get_statistic("User", "id"))
 
     def calculate_values(self):
         """Calculates the requested values for all users in user_set
@@ -70,7 +77,7 @@ class TimelineRequester(sr.StandardRequester):
         Returns
         -------
         list[UserData]
-            list of UserData object with requested statistics
+            list of UserData objects with requested statistics
         """
 
         pass
@@ -84,4 +91,4 @@ class TimelineRequester(sr.StandardRequester):
             identifier for class
         """
 
-        return "timeline"
+        return "TweetTimeline"
