@@ -158,6 +158,34 @@ class TimelineRequester(sr.StandardRequester):
                 else:
                     tag_dict[tag["tag"]] += 1
 
+    def fill_statistics_tuple(self, statistics_tuple, current_tweets):
+        """Fills statistic tuple with current tweet statistics.
+
+        Parameters
+        ----------
+        statistic_tuple : dict
+            dictionary of processed statistics
+        current_tweets : list[Tweet]
+            all current users tweets (up to 3200)
+        """
+
+        hashtag_dict = {}
+        cashtag_dict = {}
+
+        for tweet_index in range(len(current_tweets)):
+            self.count_tags(hashtag_dict, current_tweets[tweet_index], "hashtags")
+            self.count_tags(cashtag_dict, current_tweets[tweet_index], "cashtags")
+            retweeted_num_tuple = (current_tweets[tweet_index].get("public_metrics").get("retweet_count"), tweet_index)
+            liked_num_tuple = (current_tweets[tweet_index].get("public_metrics").get("like_count"), tweet_index)
+            self.fill_statistic_heap(statistics_tuple["most_retweeted_tweets"], (retweeted_num_tuple, tweet_index))
+            self.fill_statistic_heap(statistics_tuple["most_liked_tweets"], (liked_num_tuple, tweet_index))
+            if (self.is_retweet(current_tweets[tweet_index])):
+                self.fill_statistic_heap(statistics_tuple["most_retweeted_retweets"], (retweeted_num_tuple, tweet_index))
+                self.fill_statistic_heap(statistics_tuple["most_liked_retweets"], (liked_num_tuple, tweet_index))
+        
+        statistics_tuple["hashtags"] = heapq.nlargest(constants.NUMBER_TAGS_SAVED, [(hashtag_dict[key], key) for key in hashtag_dict])
+        statistics_tuple["cashtags"] = heapq.nlargest(constants.NUMBER_TAGS_SAVED, [(cashtag_dict[key], key) for key in cashtag_dict])
+
     def calculate_values(self):
         """Calculates the requested values for all users in user_set
         and returns a list of UserData objects.
