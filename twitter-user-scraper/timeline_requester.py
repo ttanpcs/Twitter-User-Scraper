@@ -70,6 +70,36 @@ class TimelineRequester(sr.StandardRequester):
 
         return "https://api.twitter.com/2/users/{}/tweets".format(self.user_set[index].get_statistic("User", "id"))
 
+    def request_tweets(self, index):
+        """Requests the last 3200 tweets for a given user and 
+        returns them as a list of Tweet objects.
+
+        Parameters
+        ----------
+        index : int
+            current index to parse in username_set
+
+        Returns
+        -------
+        list[Tweets]
+            list of Tweet objects with requested statistics
+        """
+        current_number = 0
+        current = self.connect_to_endpoint(index)
+        current_number += current.get("meta").get("result_count")
+        next_token = current.get("meta").get("next_token")
+        tweets = current["data"]
+
+        while (next_token is not None):
+            print(str(current_number))
+            print(next_token)
+            current = self.connect_to_endpoint(index, next_token)
+            current_number += current.get("meta").get("result_count")
+            next_token = current.get("meta").get("next_token")
+            tweets = np.concatenate((current["data"], tweets))
+
+        return tweets
+
     def calculate_values(self):
         """Calculates the requested values for all users in user_set
         and returns a list of UserData objects.
