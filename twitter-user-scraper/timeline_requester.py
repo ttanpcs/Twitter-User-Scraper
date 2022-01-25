@@ -1,6 +1,7 @@
 import constants
 import standard_requester as sr
 import numpy as np
+import heapq
 import user_data as ud
 
 class TimelineRequester(sr.StandardRequester):
@@ -99,6 +100,63 @@ class TimelineRequester(sr.StandardRequester):
             tweets = np.concatenate((current["data"], tweets))
 
         return tweets
+
+    def is_retweet(self, tweet):
+        """Determines if a tweet is a retweet.
+
+        Parameters
+        ----------
+        tweet : Tweet
+            tweet in subject
+
+        Returns
+        -------
+        bool
+            whether tweet is a retweet
+        """
+        if (tweet.get("referenced_tweets") is not None):
+            for referenced_tweet in tweet.get("referenced_tweets"):
+                if (referenced_tweet.get("type") == "retweeted"):
+                    return True
+
+        return False
+
+    def fill_statistic_heap(self, heap, statistic):
+        """Fills heap with current statistic tuple.
+
+        Parameters
+        ----------
+        heap : list[(int, int)]
+            current heap
+        statistic : (int, int)
+            comparison number and index tuple
+
+        """
+
+        if (len(heap) < constants.NUMBER_TWEETS_SAVED):
+            heapq.heappush(heap, statistic)
+        else:
+            heapq.heappushpop(heap, statistic)
+    
+    def count_tags(self, tag_dict, tweet, type):
+        """Fills tag dicitionary with counts of each tag.
+
+        Parameters
+        ----------
+        tag_dict : dict
+            dictionary to fill
+        tweet : Tweet
+            tweet to parase tags from
+        type : str
+            type of tag to parse
+        """
+
+        if (tweet.get("entities") is not None and tweet.get("entities").get(type) is not None):
+            for tag in tweet.get("entities").get(type):
+                if (tag_dict.get(tag["tag"]) is None):
+                    tag_dict[tag["tag"]] = 1
+                else:
+                    tag_dict[tag["tag"]] += 1
 
     def calculate_values(self):
         """Calculates the requested values for all users in user_set
