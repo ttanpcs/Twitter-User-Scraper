@@ -101,7 +101,7 @@ class TimelineRequester(sr.StandardRequester):
         next_token = current.get("meta").get("next_token")
         tweets = current["data"]
 
-        while (next_token is not None):
+        while (next_token is not None and current_number < constants.MAX_TWEETS):
             current = self.connect_to_endpoint(index, next_token)
             current_number += current.get("meta").get("result_count")
             next_token = current.get("meta").get("next_token")
