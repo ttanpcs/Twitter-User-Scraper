@@ -51,5 +51,4 @@ class UserDataHandler():
         """
 
         with open(file_path, "w") as outfile:
-            for user in user_list:
-                json.dump(user.statistic_library, outfile, indent = 4)
+            json.dump([user.statistic_library for user in user_list], outfile, indent = 4)

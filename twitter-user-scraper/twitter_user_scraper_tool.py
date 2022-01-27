@@ -28,16 +28,17 @@ def main(args):
     args : argument namespace
         All command line arguments as parsed by argparse
     """
+
     username_list = []
     if (len(args.names) == 0 and (args.input is None)):
         print("Please input either a list of usernames or an input file path\n")
         return 0
 
     if (len(args.names) != 0):
-        username_list = args.names
+        username_list = [user.strip() for user in args.names]
     elif (args.input is not None):
         with open(args.input) as infile:
-            username_list = infile.readlines()
+            username_list = [user.strip() for user in infile.readlines()]
     scraper = tus.TwitterUserScraper(bearer_token, username_list, args.followers, args.timeline)
     user_data_list = scraper.parse()
     handler = udh.UserDataHandler()
